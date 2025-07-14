@@ -75,7 +75,7 @@ public sealed class Exporter : MelonMod
     public override void OnLateInitializeMelon()
     {
         Calls.onPlayerSpawned += StartExport;
-        Directory.CreateDirectory($"{MelonEnvironment.UserDataDirectory}/glTF-Exporter/");
+        Directory.CreateDirectory($"{MelonEnvironment.UserDataDirectory}/glTF_Exporter/");
     }
 
     private void StartExport()
@@ -111,7 +111,9 @@ public sealed class Exporter : MelonMod
         // glTF Scene Setup
         ModelRoot model = ModelRoot.CreateModel();
         Scene root = model.UseScene("Player Character");
-        
+        // Copyright
+        model.Asset.Copyright = "Copyright 2025 \u00a9 Buckethead Entertainment. All rights are reserved.";
+        model.Asset.Generator = $"glTF_Exporter {BuildInfo.Version} Using SharpGLTF 1.0.4";
 
         
         // Mesh Generation
@@ -130,16 +132,16 @@ public sealed class Exporter : MelonMod
             uv.ToArray());
 
         var glbMesh = model.CreateMesh(mesh);
-        Node meshResult = root.CreateNode("CC_Result");
+        Node meshResult = root.CreateNode("CC_Result - Copyright 2025 \u00a9 Buckethead Entertainment. All rights are reserved.");
     #endregion
     
         // Setup Bones
         meshResult.WithSkinnedMesh(glbMesh, ReconstructSkeleton(meshResult, player));
-        model.SaveGLB($"{MelonEnvironment.UserDataDirectory}/glTF-Exporter/{GenerateFileName(player)}.glb");
+        model.SaveGLB($"{MelonEnvironment.UserDataDirectory}/glTF_Exporter/{GenerateFileName(player)}.glb");
         LoggerInstance.Msg("Saved model");
     }
 
-        private bool PlayerExists(Player player) => File.Exists($"{MelonEnvironment.UserDataDirectory}/glTF-Exporter/{GenerateFileName(player)}.glb");
+        private bool PlayerExists(Player player) => File.Exists($"{MelonEnvironment.UserDataDirectory}/glTF_Exporter/{GenerateFileName(player)}.glb");
 
         private string GenerateFileName(Player player)
         {

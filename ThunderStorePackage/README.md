@@ -28,7 +28,7 @@ Using blender you can use [this file](https://github.com/blankochan/glTF-Exporte
 <img alt="Video Tutorial" src="https://github.com/blankochan/glTF-Exporter/raw/refs/heads/main/Tutorial/exporter.webp">
 
 #### Text Instructions
-Assuming you already have a model imported you can
+Assuming you already have a model imported which you can obtain at `UserData/glTF_Exporter`, you can
 1. Delete all the bones in the original rig 
 	select the rig thats a bunch of Icosphere's or the one that looks like an eldritch horror and press tab
 	I want you to delete the bones in edit mode not the actual `Armature` object
