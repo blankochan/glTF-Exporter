@@ -23,7 +23,7 @@ And you're not locked into using the rig I provide (if your software of choice a
 
 Importing blender animations back into unity is untested but if you do try it please send me a photo of your results `@blankochan` on discord
 ### Replacing the skeleton
-Using blender you can use [this file](https://github.com/blankochan/glTF-Exporter/raw/refs/heads/main/Tutorial/rig.blend) to import a manually reconstructed rig
+Using blender you can use [this file](https://github.com/blankochan/glTF-Exporter/raw/refs/heads/main/Tutorial/rig.blend) to replace the rig with the one from the asset release
 
 <img alt="Video Tutorial" src="https://github.com/blankochan/glTF-Exporter/raw/refs/heads/main/Tutorial/exporter.webp">
 
