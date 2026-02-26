@@ -1,10 +1,7 @@
 {
-    "name": "glTF_Exporter",
-    "version_number": "1.0.1",
-    "website_url": "https://github.com/blankochan/glTF-Exporter",
-    "description": "Allows you to export your player models",
-    "dependencies": [
-        "LavaGang-MelonLoader-0.7.0",
-        "UlvakSkillz-RumbleModdingAPI-3.3.6"
-    ]
+  "name": "glTF_Exporter",
+  "version_number": "2.0.0",
+  "website_url": "https://github.com/blankochan/glTF-Exporter",
+  "description": "Allows you to export your player models",
+  "dependencies": ["LavaGang-MelonLoader-0.7.0"]
 }
