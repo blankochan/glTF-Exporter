@@ -76,25 +76,24 @@ public sealed class Exporter : MelonMod
         Directory.CreateDirectory($"{MelonEnvironment.UserDataDirectory}/glTF_Exporter/");
     }
 
-    internal void StartExport(string username, Il2CppRUMBLE.Players.PlayerVisualData data)
+    internal void StartExport(string playFabId, Il2CppRUMBLE.Players.PlayerVisualData data)
     {
-        string fileName = GenerateFileName(username, data);
+        string fileName = GenerateFileName(playFabId, data);
         if (File.Exists($"{MelonEnvironment.UserDataDirectory}/glTF_Exporter/{fileName}.glb"))
         {
-            LoggerInstance.Msg($"Skipping: {username}, Already exists at {MelonEnvironment.UserDataDirectory}/glTF_Exporter/{fileName}.glb");
             return;
         }
         File.Create($"{MelonEnvironment.UserDataDirectory}/glTF_Exporter/{fileName}.glb").Close(); // Preallocate file
-        MelonCoroutines.Start(Export_glTF(username));
+        MelonCoroutines.Start(Export_glTF(playFabId));
     }
 
-    private IEnumerator Export_glTF(string publicUsername)
+    private IEnumerator Export_glTF(string playfabId)
     {
         yield return _frameEnd; // we wait til frame end so the GPU Can upload our texture
         if (MeshGenerationLocked)
             yield return null;
         MeshGenerationLocked = true;
-        var visuals = Il2CppRUMBLE.CharacterCreation.CharacterCreationLookupTable.instance.GeneratedPlayerVisualsCache[publicUsername];
+        var visuals = Il2CppRUMBLE.CharacterCreation.CharacterCreationLookupTable.instance.GeneratedPlayerVisualsCache[playfabId];
         // Fetch Texture
         MaterialBuilder material = new MaterialBuilder("Player Controller");
         Texture2D tex = TexDownload(visuals.GeneratedTexture);
@@ -107,13 +106,13 @@ public sealed class Exporter : MelonMod
         Il2CppList_Vector2 uv = new();
         unityMesh.GetUVs(0, uv);
 
-        LoggerInstance.Msg($"Exporting {publicUsername}");
+        LoggerInstance.Msg($"Exporting {playfabId}");
 
         // glTF Scene Setup
         ModelRoot model = ModelRoot.CreateModel();
         Scene root = model.UseScene("Player Character");
         // Copyright
-        model.Asset.Copyright = "Copyright 2025 \u00a9 Buckethead Entertainment. All rights are reserved.";
+        model.Asset.Copyright = "Copyright 2026 \u00a9 Buckethead Entertainment. All rights are reserved.";
         model.Asset.Generator = $"glTF_Exporter {BuildInfo.Version} Using SharpGLTF 1.0.4";
 
 
@@ -138,15 +137,24 @@ public sealed class Exporter : MelonMod
 
         // Setup Bones
         meshResult.WithSkinnedMesh(glbMesh, ReconstructSkeleton(meshResult, unityMesh));
-        string fileName = GenerateFileName(publicUsername, visuals.Data);
+        string fileName = GenerateFileName(playfabId, visuals.Data);
         model.SaveGLB($"{MelonEnvironment.UserDataDirectory}/glTF_Exporter/{fileName}.glb");
         LoggerInstance.Msg($"Saved model to {MelonEnvironment.UserDataDirectory}/glTF_Exporter/{fileName}.glb");
         MeshGenerationLocked = false;
     }
 
-    private string GenerateFileName(string publicUsername, PlayerVisualData data)
+    private string GenerateFileName(string playfabId, PlayerVisualData data)
     {
-        string playerName = Regex.Replace(publicUsername, "<.*?>|\\(.*?\\)|[^a-zA-Z0-9_ ]", "").TrimStart().TrimEnd();
+        string username = playfabId;
+        if (playfabId is not "LocalPlayer")
+        {
+            Player player = PlayerManager.Instance.AllPlayers.ToArray().FirstOrDefault(player => player.Data.GeneralData.PlayFabTitleId == playfabId, null);
+            if (player is not null) username = player.Data.GeneralData.PublicUsername;
+        }
+        string playerName = Regex.Replace(username, "<.*?>|\\(.*?\\)|[^a-zA-Z0-9_ ]", ""); // Remove color tags
+        var invalids = System.IO.Path.GetInvalidFileNameChars();
+        playerName = invalids.Aggregate(playerName, (current, c) => current.Replace(c, '_')).TrimEnd().TrimStart(); // Sanitize filepath
+
         return playerName + "-" + CreateCosmeticHash(data);
     }
 
@@ -169,7 +177,6 @@ public sealed class Exporter : MelonMod
 
     private Texture2D TexDownload(Texture2D gpuTex)
     {
-        if (gpuTex == null) LoggerInstance.Msg("what the fuck");
         RenderTexture renderTexture = RenderTexture.GetTemporary(
             gpuTex.width,
             gpuTex.height,

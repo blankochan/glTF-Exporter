@@ -2,15 +2,14 @@
 * The default skeleton/armature generated is almost unusable for animation 
 	To my understanding this is a limitation of the file format I choose (`glTF`) combined with unity IBM's lacking critical information for skeletal reconstruction.
 	
-	Refer to [This](#replacing-the-skeleton-with-a-usable-one) for instructions on replacing the skeleton with a more usable one in Blender
+	Refer to [#Replacing the skeleton with a usable one](#replacing-the-skeleton-with-a-usable-one) for instructions on replacing the skeleton with a more usable one in Blender
 	(I'm sorry for anyone who uses other 3d programs but the information might still work with some adaptations);
 	that is the best solution I could come up with if anybody has a better idea that works please contact me, I'm in the Rumble Modding discord `@blankochan`
 
 * My face and hair is red!!!
 	This is because by default some 3d programs automatically render vertex color, which is used by rumble for cutting out your hair in first person and eye rendering, and I include this information incase it ever becomes handy to someone.
-	
 	A quick fix would be in your program of choice to just disable vertex color.
-
+	
 * The model is flipped
 	as far as I can tell this is a quirk of how unity renders/stores the model, its a very easy fix, just set the rig's X axis scale to -1, I am looking into automatically flipping it for you but this mods been delayed enough I'd rather get a buggy version out than delay another 3 months
 
@@ -23,7 +22,7 @@ And you're not locked into using the rig I provide (if your software of choice a
 
 Importing blender animations back into unity is untested but if you do try it please send me a photo of your results `@blankochan` on discord
 ### Replacing the skeleton
-Using blender you can use [this file](https://github.com/blankochan/glTF-Exporter/raw/refs/heads/main/Tutorial/rig.blend) to import a manually reconstructed rig
+Using blender you can use [this file](https://github.com/blankochan/glTF-Exporter/raw/refs/heads/main/Tutorial/rig.blend) to replace the rig with the one from the asset release
 
 <img alt="Video Tutorial" src="https://github.com/blankochan/glTF-Exporter/raw/refs/heads/main/Tutorial/exporter.webp">
 

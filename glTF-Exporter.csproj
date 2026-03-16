@@ -22,8 +22,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
-      <PackageReference Include="LavaGang.MelonLoader" Version="0.7.0" />
+      <PackageReference Include="LavaGang.MelonLoader" Version="0.7.2" />
       <PackageReference Include="SharpGLTF.Core" Version="1.0.4" />
       <PackageReference Include="SharpGLTF.Toolkit" Version="1.0.4" />
     </ItemGroup>
